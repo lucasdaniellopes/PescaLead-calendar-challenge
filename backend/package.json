@@ -1,5 +1,5 @@
 {
-  "name": "PescaLead calendar challengebackend",
+  "name": "pescalead-calendar-challenge-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,9 +10,12 @@
   },
   "keywords": [],
   "author": "",
+  "type": "module",
   "license": "ISC",
   "packageManager": "pnpm@10.17.1",
   "dependencies": {
+    "@supabase/supabase-js": "^2.58.0",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0"
   },
   "devDependencies": {
