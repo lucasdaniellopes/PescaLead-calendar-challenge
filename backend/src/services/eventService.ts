@@ -48,4 +48,14 @@ export class EventService {
 
         return data
     }
+
+    async deleteEvent(id: number): Promise<void> {
+        const { error } = await database
+            .from("events")
+            .delete()
+            .eq("id", id)
+
+
+        if (error) throw new Error(error.message)
+    }
 }

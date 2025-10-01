@@ -56,3 +56,17 @@ export const updateEvent = async (req: Request, res: Response) => {
         res.status(400).json({ error: message })
     }
 }
+
+export const deleteEvent = async (req: Request, res: Response) => {
+    try {
+        const id = Number(req.params.id)
+        if (isNaN(id)) {
+            return res.status(400).json({ error: 'ID inválido' })
+        }
+        await eventService.deleteEvent(id)
+        res.status(204).send()
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Erro ao deletar evento'
+        res.status(400).json({ error: message })
+    }
+}

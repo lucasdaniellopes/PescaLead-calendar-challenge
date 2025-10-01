@@ -124,6 +124,22 @@ export const eventSpec = {
         400: { description: 'Dados inválidos' },
         404: { description: 'Evento não encontrado' }
       }
+    },
+    delete: {
+      summary: 'Deletar evento',
+      parameters: [
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
+          schema: { type: 'number' }
+        }
+      ],
+      responses: {
+        204: { description: 'Evento deletado com sucesso' },
+        400: { description: 'ID inválido' },
+        404: { description: 'Evento não encontrado' }
+      }
     }
   }
 }
