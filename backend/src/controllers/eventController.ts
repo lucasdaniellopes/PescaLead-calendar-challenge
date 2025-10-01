@@ -14,3 +14,13 @@ export const createEvent = async (req:Request, res: Response) => {
         res.status(400).json({ error: message })
     }
 }
+
+export const findAllEvents = async (req: Request, res: Response) => {
+    try {
+        const events = await eventService.findAll()
+        res.status(200).json(events)
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Erro ao buscar eventos'
+        res.status(500).json({ error: message })
+    }
+}

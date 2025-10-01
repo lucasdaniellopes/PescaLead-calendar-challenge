@@ -24,6 +24,22 @@ app.use('/api', eventRoutes)
  const openApiSpec = {
     openapi: '3.0.0',
     info: { title: 'API de Eventos', version: '1.0.0' },
+    components: {
+      schemas: {
+        Event: {
+          type: 'object',
+          properties: {
+            id: { type: 'number' },
+            title: { type: 'string' },
+            start_time: { type: 'string', format: 'date-time' },
+            end_time: { type: 'string', format: 'date-time' },
+            color: { type: 'string' },
+            created_at: { type: 'string', format: 'date-time' }
+          },
+          required: ['id', 'title', 'start_time', 'end_time', 'color']
+        }
+      }
+    },
     paths: {
       '/api/events': eventSpec
     }

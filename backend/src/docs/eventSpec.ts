@@ -1,4 +1,20 @@
 export const eventSpec = {
+    get: {
+      summary: 'Listar todos os eventos',
+      responses: {
+        200: {
+          description: 'Lista de eventos',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: { $ref: '#/components/schemas/Event' }
+              }
+            }
+          }
+        }
+      }
+    },
     post: {
         summary: 'Criar evento',
         requestBody: {
@@ -27,8 +43,8 @@ export const eventSpec = {
                     },
                     color: {
                       type: 'string',
-                      enum: ['blue', 'green', 'red', 'yellow', 'purple'],
-                      example: 'blue'
+                      pattern: '^#[0-9A-Fa-f]{6}$',
+                      example: '#FF5733'
                     }
                   }
                 }

@@ -12,4 +12,15 @@ export class EventService {
         if (error) throw new Error(error.message)
         return data
     }
+
+    async findAll(): Promise<Event[]> {
+        const { data, error } = await database
+            .from("events")
+            .select("*")
+            .order('start_time', { ascending: true })
+
+        if (error) throw new Error(error.message)
+
+        return data
+    }
 }
