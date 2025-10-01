@@ -8,7 +8,7 @@ interface CalendarGridProps {
 }
 
 export const CalendarGrid = ({ events }: CalendarGridProps) => {
-    const [currentDate, setCurrentDate] = useState(new Date());
+    const [currentDate, setCurrentDate] = useState(new Date())
 
     const getDaysInMonth = () => {
         return new Date(currentYear, currentMonthNumber + 1, 0).getDate()
