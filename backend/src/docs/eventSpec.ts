@@ -1,4 +1,5 @@
 export const eventSpec = {
+  '/api/events': {
     get: {
       summary: 'Listar todos os eventos',
       responses: {
@@ -56,4 +57,35 @@ export const eventSpec = {
             '400': { description: 'Dados inválidos' }
           }
         }
+  },
+  '/api/events/{id}': {
+    get: {
+      summary: 'Buscar evento por ID',
+      parameters: [
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
+          schema: { type: 'number' },
+          description: 'ID do evento'
+        }
+      ],
+      responses: {
+        200: {
+          description: 'Evento encontrado',
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/Event' }
+            }
+          }
+        },
+        404: {
+          description: 'Evento não encontrado'
+        },
+        400: {
+          description: 'ID inválido'
+        }
+      }
+    }
+  }
 }

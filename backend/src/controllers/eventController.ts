@@ -24,3 +24,20 @@ export const findAllEvents = async (req: Request, res: Response) => {
         res.status(500).json({ error: message })
     }
 }
+
+export const findEventById = async (req: Request, res: Response ) => {
+    try {
+        const id = Number(req.params.id)
+        const event = await eventService.findById(id)
+
+        if (!event) {
+            return res.status(404).json({ error: 'Evento não encontrado' })
+        }
+
+        res.status(200).json(event)
+
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Erro ao buscar evento'
+        res.status(500).json({ error: message })
+    }
+}

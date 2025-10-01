@@ -23,4 +23,16 @@ export class EventService {
 
         return data
     }
+
+    async findById(id: number): Promise<Event | null> {
+        const { data, error } = await database
+            .from("events")
+            .select("*")
+            .eq("id", id)
+            .single()
+
+        if (error) throw new Error(error.message)
+
+        return data
+    }
 }

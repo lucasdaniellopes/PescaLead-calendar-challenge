@@ -40,10 +40,7 @@ app.use('/api', eventRoutes)
         }
       }
     },
-    paths: {
-      '/api/events': eventSpec
-    }
-    
+    paths: eventSpec
   }
 
 
