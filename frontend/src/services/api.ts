@@ -1,11 +1,14 @@
 import axios from "axios";
-import dotenv from "dotenv";
+import type { Event } from "../types/event";
 
-dotenv.config();
-
-const api = axios.create({
-  baseURL: process.env.API_URL,
+export const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 
-export default api;
+export const findAllEvents = async (): Promise<Event[]> => {
+  const response = await api.get<Event[]>("/events");
+  return response.data;
+};
+
+

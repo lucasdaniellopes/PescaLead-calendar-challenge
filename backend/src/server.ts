@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import { apiReference } from '@scalar/express-api-reference'
 import eventRoutes from './routes/eventRoutes.js'
 import { eventSpec } from './docs/eventSpec.js'
-
+import cors from 'cors'
 
 
 const app = express()
@@ -11,6 +11,9 @@ const PORT = process.env.PORT
 
 dotenv.config()
 app.use(express.json())
+app.use(cors({
+    origin: '*',
+}))
 
 
 app.use( '/docs',apiReference({
