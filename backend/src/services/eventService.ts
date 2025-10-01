@@ -35,4 +35,17 @@ export class EventService {
 
         return data
     }
+
+    async updateEvent(id: number, event: UpdateEventInput): Promise<Event> {
+        const { data, error } = await database
+            .from("events")
+            .update(event)
+            .eq("id", id)
+            .select()
+            .single()
+
+        if (error) throw new Error(error.message)
+
+        return data
+    }
 }

@@ -86,6 +86,44 @@ export const eventSpec = {
           description: 'ID inválido'
         }
       }
+    },
+    patch: {
+      summary: 'Atualizar evento',
+      parameters: [
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
+          schema: { type: 'number' }
+        }
+      ],
+      requestBody: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                title: { type: 'string', minLength: 3, maxLength: 50 },
+                start_time: { type: 'string', format: 'date-time' },
+                end_time: { type: 'string', format: 'date-time' },
+                color: { type: 'string', pattern: '^#[0-9A-Fa-f]{6}$' }
+              }
+            }
+          }
+        }
+      },
+      responses: {
+        200: {
+          description: 'Evento atualizado',
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/Event' }
+            }
+          }
+        },
+        400: { description: 'Dados inválidos' },
+        404: { description: 'Evento não encontrado' }
+      }
     }
   }
 }
