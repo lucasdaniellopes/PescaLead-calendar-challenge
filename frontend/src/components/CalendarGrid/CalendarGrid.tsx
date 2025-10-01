@@ -10,17 +10,34 @@ interface CalendarGridProps {
 export const CalendarGrid = ({ events }: CalendarGridProps) => {
     const [currentDate, setCurrentDate] = useState(new Date());
 
-    const getDaysInMonth = (date: Date) => {
-        const year = date.getFullYear()
-        const month = date.getMonth()
-        return new Date(year, month + 1, 0).getDate()
+    const getDaysInMonth = () => {
+        return new Date(currentYear, currentMonthNumber + 1, 0).getDate()
     }
 
-    const getFirstDayOfMonth = (date: Date) => {
-        const year = date.getFullYear()
-        const month = date.getMonth()
-        const day = new Date(year, month, 1).getDay()
+    const getFirstDayOfMonth = () => {
+        const day = new Date(currentYear, currentMonthNumber, 1).getDay()
         return day === 0 ? 6 : day - 1
+    }
+
+    const getEventsForDay = (day: number) => {
+        return events.filter(event => {
+            const eventDate = new Date(event.start_time)
+            return eventDate.getFullYear() === currentYear &&
+                   eventDate.getMonth() === currentMonthNumber &&
+                   eventDate.getDate() === day
+        })
+    }
+
+    const formatEventTime = (start_time: string) => {
+        const date = new Date(start_time)
+        return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+    }
+
+    const isToday = (day: number) => {
+        const today = new Date()
+        return today.getFullYear() === currentYear &&
+               today.getMonth() === currentDate.getMonth() &&
+               today.getDate() === day
     }
 
     const prevMonth = () => {
@@ -31,10 +48,12 @@ export const CalendarGrid = ({ events }: CalendarGridProps) => {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))
     }
 
+    
     const currentYear = currentDate.getFullYear()
     const currentMonth = currentDate.toLocaleString('default', { month: 'long' })
-    const daysInMonth = getDaysInMonth(currentDate)
-    const firstDayOfMonth = getFirstDayOfMonth(currentDate)
+    const currentMonthNumber = currentDate.getMonth()
+    const daysInMonth = getDaysInMonth()
+    const firstDayOfMonth = getFirstDayOfMonth()
 
     return (
     <div className="calendar-container">
@@ -57,7 +76,15 @@ export const CalendarGrid = ({ events }: CalendarGridProps) => {
                 const day = index + 1
                 return (
                     <div key={day} className="calendar-day">
-                        <div className="calendar-day-number">{day}</div>
+                        <div className={`calendar-day-number ${isToday(day) ? 'today-number' : ''}`}>{day}</div>
+                        <div className="calendar-events">
+                            {getEventsForDay(day).map(event => (
+                                <div key={event.id} className="calendar-event" style={{ backgroundColor: event.color }}>
+                                    <div className="event-time">{formatEventTime(event.start_time)}</div>
+                                    <div className="event-title">{event.title}</div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )
             })}
