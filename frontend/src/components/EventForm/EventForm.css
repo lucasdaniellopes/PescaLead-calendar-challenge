@@ -1,32 +1,108 @@
 .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--white);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    width: 400px;
+    max-width: 90%;
+}
+
+.modal-content h2 {
+    text-align: center;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.modal-buttons {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
+      gap: 16px;
+      justify-content: space-between;
+      margin-top: 24px;
   }
 
-  .modal-content {
-      background-color: var(--white);
-      padding: var(--spacing-md);
+  .modal-buttons button {
+      padding: 12px 24px;
       border-radius: var(--border-radius);
-      width: 400px;
-      max-width: 90%;
+      border: 2px solid transparent;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-width: 120px;
   }
 
-  .modal-content form {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-md);
+  /* Botão Salvar */
+  .modal-buttons button[type="submit"] {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border-color: var(--primary-color);
   }
 
-  .modal-buttons {
-      display: flex;
-      gap: var(--spacing-md);
-      justify-content: flex-end;
+  .modal-buttons button[type="submit"]:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+      transform: translateY(-1px);
   }
+
+
+
+.color-options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.color-option {
+    width: 32px;
+    height: 32px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.color-option.selected {
+    border-color: var(--black);
+    transform: scale(1.1);
+}
+
+.color-option:hover {
+    opacity: 0.8;
+}
+
+.delete-button {
+    background-color: var(--danger-color);
+    color: var(--white);
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.delete-button:hover {
+    background-color: var(--danger-hover);
+}
+
+.modal-content input {
+    padding: 8px;
+    border: 1px solid var(--gray-dark);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}

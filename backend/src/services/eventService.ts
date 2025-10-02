@@ -40,7 +40,7 @@ export class EventService {
     }
 
     async deleteEvent(id: number): Promise<void> {
-        const result = await pool.query('DELETE FROM events WHERE id = $1', [id]);
+        const result = await pool.query('DELETE FROM events WHERE id = $1 RETURNING id', [id]);
         if (result.rows.length === 0) {
             throw new Error('Evento não encontrado');
         }

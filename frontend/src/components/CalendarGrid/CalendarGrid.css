@@ -1,10 +1,46 @@
 .calendar-header{
     display: flex;
     width: 100%;
-    justify-content: center;
+    align-items: center;
     gap: 1rem;
 }
 
+.calendar-header .nav-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    justify-content: center;
+}
+
+.calendar-header button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.calendar-header button:not(.add-event-button-header):hover{
+    background-color: var(--gray-hover);
+}
+
+.add-event-button-header {
+    position: absolute;
+    left: 30px;
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: var(--border-radius);
+}
+
+.add-event-button-header:hover {
+    background-color: var(--primary-hover);
+}
 .calendar-weekday-header{
     margin: 0 auto
 }
@@ -14,6 +50,7 @@
   grid-template-columns: repeat(7, 1fr);
   gap: 1px;
   background-color: var(--gray-light);
+  margin: 20px 0;
 }
 
 .calendar-day {
@@ -21,7 +58,14 @@
     padding: var(--spacing-md);
     border: 1px solid var(--gray-light);
     border-radius: var(--border-radius);
+    height: 135px;
+    overflow-x: hidden;
 }
+
+ .calendar-day-number{
+    display: flex;
+    justify-content: center;
+ }
 
  .calendar-day-number.today-number {
       width: 28px;
@@ -29,9 +73,7 @@
       border-radius: 50%;
       background-color: var(--primary-color);
       color: var(--white);
-      display: flex;
       align-items: center;
-      justify-content: center;
       font-weight: bold;
       margin: 0 auto;
   }
@@ -69,4 +111,18 @@
     opacity: 0.8;
     margin-right: 4px;
     font-size: 0.65rem;
+}
+
+.more-events {
+      font-size: 0.7rem;
+      color: var(--primary-color);
+      font-weight: bold;
+      padding: 2px 4px;
+      text-align: center;
+      cursor: pointer;
+}
+
+  .more-events:hover {
+      background-color: var(--gray-light);
+      border-radius: 2px;
 }

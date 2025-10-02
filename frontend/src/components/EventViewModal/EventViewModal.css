@@ -1,0 +1,97 @@
+.event-view {
+      max-width: 500px;
+      width: 90%;
+  }
+
+  .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--gray-light);
+  }
+
+  .modal-header h2 {
+      margin: 0;
+      color: var(--black);
+  }
+
+  .modal-actions {
+      display: flex;
+      gap: 8px;
+  }
+
+  .action-btn {
+      width: 30px;
+      height: 30px;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+  }
+
+  .action-btn.edit-btn {
+      background-color: var(--gray-light);
+      color: var(--black);
+  }
+
+  .action-btn.edit-btn:hover {
+      background-color: var(--gray-hover);
+  }
+
+  .delete-btn {
+      background-color: var(--danger-color);
+      color: var(--white);
+  }
+
+  .delete-btn:hover {
+      background-color: var(--danger-hover);
+  }
+
+  .close-btn {
+      background-color: var(--gray-light);
+      color: var(--black);
+  }
+
+  .close-btn:hover {
+      background-color: var(--gray-hover);
+  }
+
+  .event-details {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+  }
+
+  .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+  }
+
+  .detail-label {
+      font-weight: 600;
+      color: var(--gray-dark);
+      min-width: 80px;
+  }
+
+  .detail-value {
+      color: var(--black);
+      font-size: 1rem;
+  }
+
+  .color-display {
+      display: flex;
+      align-items: center;
+  }
+
+  .color-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-light);
+  }

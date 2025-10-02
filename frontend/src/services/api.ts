@@ -17,4 +17,13 @@ export const createEvent = async (eventData: CreateEventInput): Promise<Event> =
     return response.data
 }
 
+export const updateEvent = async (eventId: number, eventData: CreateEventInput): Promise<Event> => {
+    const response = await api.patch<Event>(`/events/${eventId}`, eventData)
+    return response.data
+}
+
+export const deleteEvent = async (eventId: number): Promise<void> => {
+    await api.delete(`/events/${eventId}`)
+}
+
 
