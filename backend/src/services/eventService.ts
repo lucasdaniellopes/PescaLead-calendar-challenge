@@ -72,14 +72,18 @@ export class EventService {
         await this.validateEvent(eventForValidation, excludeEventId)
     }
 
-    private validateTimeOrder(startTime: Date, endTime: Date): void {
-        if (endTime <= startTime) {
+    public validateTimeOrder(startTime: string, endTime: string): void {
+        const startDate = new Date(startTime)
+        const endDate = new Date(endTime)
+        if (endDate <= startDate) {
             throw new Error('O horário de término deve ser posterior ao horário de início.');
         }
     }
 
-    private validateDuration(startTime: Date, endTime: Date): void {
-        const durationMinutes = (endTime.getTime() - startTime.getTime()) / (1000 * 60);
+    public validateDuration(startTime: string, endTime: string): void {
+        const startDate = new Date(startTime)
+        const endDate = new Date(endTime)
+        const durationMinutes = (endDate.getTime() - startDate.getTime()) / (1000 * 60)
 
         if (durationMinutes < 15) {
             throw new Error('A duração do evento deve ser de pelo menos 15 minutos');
@@ -90,8 +94,9 @@ export class EventService {
         }
     }
 
-    private async validateDailyLimit(startTime: Date,  excludeEventId?: number): Promise<void> {
-        const eventDate = startTime.toISOString().split('T')[0];
+    public async validateDailyLimit(startTime: string,  excludeEventId?: number): Promise<void> {
+        const startDate = new Date(startTime)
+        const eventDate = startDate.toISOString().split('T')[0]
         const query = excludeEventId
             ? 'SELECT COUNT(*) FROM events WHERE DATE(start_time) = $1 AND id != $2'
             : 'SELECT COUNT(*) FROM events WHERE DATE(start_time) = $1';
@@ -101,12 +106,10 @@ export class EventService {
 
         if (eventCount >= 8) {
             throw new Error('Máximo de 8 eventos por dia');
-
-            
         }
     }
 
-    private async validateTimeOverlap(eventData: CreateEventInput, excludeEventId?: number): Promise<void> {
+    public async validateTimeOverlap(eventData: CreateEventInput, excludeEventId?: number): Promise<void> {
         const query = excludeEventId
             ? `SELECT COUNT(*) FROM events
               WHERE id != $1 AND

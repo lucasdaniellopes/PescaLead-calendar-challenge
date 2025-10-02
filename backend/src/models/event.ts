@@ -1,16 +1,16 @@
 export interface Event {
   id: number
   title: string
-  start_time: Date
-  end_time: Date
+  start_time: string
+  end_time: string
   color: string
   created_at: Date
 }
 
 export interface CreateEventInput {
   title: string
-  start_time: Date
-  end_time: Date
+  start_time: string
+  end_time: string
   color: string
 }
 
