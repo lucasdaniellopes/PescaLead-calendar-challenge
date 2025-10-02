@@ -87,7 +87,7 @@ O servidor estará disponível em `http://localhost:3333`
 
 3. Configure a variável de ambiente da API:
    ```bash
-   VITE_API_URL=http://localhost:3001
+   VITE_API_URL=http://localhost:3333/api
    ```
 
 4. Inicie o servidor de desenvolvimento:
