@@ -3,6 +3,8 @@ import type { Event, CreateEventInput, UpdateEventInput } from "../models/event.
 
 export class EventService {
     async create(event: CreateEventInput): Promise<Event> {
+       await this.validateEvent(event)
+
        const result = await pool.query(
             'INSERT INTO events (title, start_time, end_time, color) VALUES ($1, $2, $3, $4) RETURNING *',
             [event.title, event.start_time, event.end_time, event.color]
@@ -24,6 +26,8 @@ export class EventService {
     }
 
     async updateEvent(id: number, event: UpdateEventInput): Promise<Event> {
+        await this.validateUpdateEvent(event, id)
+        
         const result = await pool.query(
             `UPDATE events SET 
                 title = COALESCE($1, title), 
@@ -45,4 +49,79 @@ export class EventService {
             throw new Error('Evento não encontrado');
         }
     }
+
+    private async validateEvent(eventData: CreateEventInput, excludeEventId?: number): Promise<void> {
+        this.validateTimeOrder(eventData.start_time, eventData.end_time)
+        this.validateDuration(eventData.start_time, eventData.end_time)
+        await this.validateDailyLimit(eventData.start_time, excludeEventId)
+        await this.validateTimeOverlap(eventData, excludeEventId)
+    }
+
+    private async validateUpdateEvent(eventData: UpdateEventInput, excludeEventId?: number): Promise<void> {
+        
+        if (!eventData.start_time || !eventData.end_time) {
+            return
+        }
+        
+        const eventForValidation: CreateEventInput = {
+            title: eventData.title || '',
+            start_time: eventData.start_time || '',
+            end_time: eventData.end_time || '',
+            color: eventData.color || ''
+        }
+        await this.validateEvent(eventForValidation, excludeEventId)
+    }
+
+    private validateTimeOrder(startTime: Date, endTime: Date): void {
+        if (endTime <= startTime) {
+            throw new Error('O horário de término deve ser posterior ao horário de início.');
+        }
+    }
+
+    private validateDuration(startTime: Date, endTime: Date): void {
+        const durationMinutes = (endTime.getTime() - startTime.getTime()) / (1000 * 60);
+
+        if (durationMinutes < 15) {
+            throw new Error('A duração do evento deve ser de pelo menos 15 minutos');
+        }
+
+        if (durationMinutes > 720) {
+            throw new Error('A duração maxima do evento é de 12 horas');
+        }
+    }
+
+    private async validateDailyLimit(startTime: Date,  excludeEventId?: number): Promise<void> {
+        const eventDate = startTime.toISOString().split('T')[0];
+        const query = excludeEventId
+            ? 'SELECT COUNT(*) FROM events WHERE DATE(start_time) = $1 AND id != $2'
+            : 'SELECT COUNT(*) FROM events WHERE DATE(start_time) = $1';
+        const params = excludeEventId ? [eventDate, excludeEventId] : [eventDate];
+        const result = await pool.query(query, params);
+        const eventCount = parseInt(result.rows[0].count);
+
+        if (eventCount >= 8) {
+            throw new Error('Máximo de 8 eventos por dia');
+
+            
+        }
+    }
+
+    private async validateTimeOverlap(eventData: CreateEventInput, excludeEventId?: number): Promise<void> {
+        const query = excludeEventId
+            ? `SELECT COUNT(*) FROM events
+              WHERE id != $1 AND
+                (start_time, end_time) OVERLAPS ($2, $3)`
+            : `SELECT COUNT(*) FROM events
+              WHERE (start_time, end_time) OVERLAPS ($1, $2)`;
+        const params = excludeEventId
+            ? [excludeEventId, eventData.start_time, eventData.end_time]
+            : [eventData.start_time, eventData.end_time];
+        const result = await pool.query(query, params);
+        const overlapCount = parseInt(result.rows[0].count);
+
+        if (overlapCount > 0) {
+            throw new Error('Já existe um evento nesse intervalo de tempo')
+        }
+    }
+        
 }
